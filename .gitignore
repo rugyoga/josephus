@@ -1,0 +1,6 @@
+*.class
+*.log
+.cache
+.history
+.lib/
+target/
