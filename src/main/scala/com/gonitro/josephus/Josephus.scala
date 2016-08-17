@@ -1,23 +1,27 @@
-package com.gonitro.josephus;
+package com.gonitro.josephus
 
-import scala.collection.immutable.Queue;
+import scala.collection.immutable.Queue
 
 object Josephus {
-  def solve(soldiers: Queue[Int], k: Int, skip: Int): Int =
-    if (soldiers.length == 1)
-      soldiers.front
-    else if (skip == 0)
-      solve(soldiers.tail, k, k-1)
-    else if (skip < soldiers.length)
-      solve(soldiers.drop(skip).enqueue(soldiers.take(skip)), k, 0)
+  def solve(ns: Queue[Int], k: Int, take: Int): Int =
+    if (ns.length == 1)
+      ns.head
+    else if (take == 0)
+      solve(ns.tail, k, k-1)
+    else if (take < ns.length)
+      ns.splitAt(take) match { case (a, b) => solve(b.enqueue(a), k, 0) }
     else
-      solve(soldiers, k, skip % soldiers.length)
+      solve(ns, k, take % ns.length)
 
-  def solve(n: Int, k: Int): Int = solve(Queue(1 to n: _*), k, k-1)
-
-  def main(args: Array[String]): Unit = {
-    require(args.size == 2, "Usage: Josephus <n> <k>")
-    val ints = args.map(_.toInt)
-    println(solve(ints(0), ints(1)))
+  def solve(n: Int, k: Int): Int = {
+    require(n > 0)
+    require(k > 0)
+    solve(Queue(1 to n: _*), k, k-1)
   }
+
+  def main(args: Array[String]): Unit =
+    args match {
+      case Array(n, k) => println(solve(n.toInt, k.toInt))
+      case _ => println("Usage: Josephus <n> <k>")
+    }
 }
