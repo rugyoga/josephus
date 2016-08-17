@@ -1,6 +1,6 @@
 package com.gonitro.josephus
 
-import scala.collection.immutable.Queue
+import collection.immutable.Queue
 
 object Josephus {
   def solve(ns: Queue[Int], k: Int, take: Int): Int =
